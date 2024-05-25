@@ -12,6 +12,31 @@ This Interest Rate Calculator is a desktop application developed using PyQt for 
   * Time Period: The duration for which the money is invested or borrowed.
 * **Real-Time Calculations:** Instant computation of the future value based on user inputs.
 * **Dynamic Graphs:** Utilizes Matplotlib to display the growth of the investment or loan over time, helping users visualize the impact of different interest rates.
-  
+* **Save and Export:** Option to save the plotted graphs as image files for further analysis or reporting.
+
+### Requirements
+* Python 3.x
+* PyQt5
+* Matplotlib
+
+### Installation
+1. Clone the repository:
+
+    `git clone https://github.com/kinyuajohn/interest_calculator.git`
+
+2. Navigate to the project directory:
+
+    `cd interest-rate`
+
+### Usage
+1. Run the application:
+
+   `py main.py`
+2. Enter the principal amount, interest rate, and time period in the provided fields.
+3. Click the "Calculate" button to see the results.
+4. View the interest growth over time in the interactive plot.
+5. Save the plot as an image file if needed.
+
+### Screenshot
 
 ![image](interest_rate_app.png)
