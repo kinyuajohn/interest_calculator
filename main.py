@@ -113,16 +113,16 @@ class FinanceApp(QMainWindow):
                     color: #eeeeee;
                 }
                 
-                QLabel, QLineEdit, QPushButton, QCheckBox {
+                QLabel, QPushButton, QCheckBox {
                     color: #eeeeee;
                 }
                 
-                QMessageBox QLabel {
+                QLineEdit, QMessageBox QLabel {
                     color: #333333;
                 }
                 
                 QPushButton{
-                    background-color: #333333;
+                    background-color: #333333;○
                     color: #eeeeee;
                 }
                 
@@ -159,7 +159,7 @@ class FinanceApp(QMainWindow):
 
         # update chart with data
         self.figure.clear()
-        # plt.style.use("seaborn")♣
+        plt.style.use("seaborn-v0_8")
         ax = self.figure.subplots()
         years = list(range(1, num_years + 1))
         totals = [
