@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import (
     QMainWindow,
     QMessageBox,
     QFileDialog,
+    QCheckBox,
 )
 from PyQt5.QtGui import QStandardItemModel, QStandardItem
 
@@ -45,6 +46,8 @@ class FinanceApp(QMainWindow):
         self.clear_button = QPushButton("Clear")
         self.save_button = QPushButton("Save")
 
+        self.dark_mode = QCheckBox("Dark Mode")
+
         self.figure = plt.figure()
         self.canvas = FigureCanvas(self.figure)
 
@@ -60,6 +63,7 @@ class FinanceApp(QMainWindow):
         self.row1.addWidget(self.rate_input)
         self.row1.addWidget(self.years_text)
         self.row1.addWidget(self.years_input)
+        self.row1.addWidget(self.dark_mode)
 
         self.col1.addWidget(self.tree_view)
         self.col1.addWidget(self.calc_button)
@@ -80,6 +84,57 @@ class FinanceApp(QMainWindow):
         self.calc_button.clicked.connect(self.calc_interest)
         self.clear_button.clicked.connect(self.reset)
         self.save_button.clicked.connect(self.save_data)
+        self.dark_mode.stateChanged.connect(self.toggle_mode)
+
+        self.apply_styles()
+
+    def apply_styles(self):
+        self.setStyleSheet(
+            """
+            QMainWindow {
+                background-color: #f0f0f0;
+            }
+            
+            QLabel, QLineEdit, QPushButton {
+                background-color: #f0f0f0;
+            }
+            
+            QTreeView {
+                background-color: #ffffff;
+            }
+            """
+        )
+
+        if self.dark_mode.isChecked():
+            self.setStyleSheet(
+                """
+                QMainWindow {
+                    background-color: #222222;
+                    color: #eeeeee;
+                }
+                
+                QLabel, QLineEdit, QPushButton, QCheckBox {
+                    color: #eeeeee;
+                }
+                
+                QMessageBox QLabel {
+                    color: #333333;
+                }
+                
+                QPushButton{
+                    background-color: #333333;
+                    color: #eeeeee;
+                }
+                
+                QTreeView {
+                    background-color: #444444;
+                    color: #eeeeee;
+                }
+                """
+            )
+
+    def toggle_mode(self):
+        self.apply_styles()
 
     def calc_interest(self):
         initial_investment = None
@@ -91,6 +146,10 @@ class FinanceApp(QMainWindow):
             QMessageBox.warning(self, "Error", "Invalid input, enter a number!")
             return
 
+        self.model.clear()
+
+        self.model.setHorizontalHeaderLabels(["Year", "Total"])
+
         total = initial_investment
         for year in range(1, num_years + 1):
             total += total * (interest_rate / 100)
@@ -100,6 +159,7 @@ class FinanceApp(QMainWindow):
 
         # update chart with data
         self.figure.clear()
+        # plt.style.use("seaborn")♣
         ax = self.figure.subplots()
         years = list(range(1, num_years + 1))
         totals = [
@@ -110,6 +170,7 @@ class FinanceApp(QMainWindow):
         ax.set_title("Interest Chart")
         ax.set_xlabel("Year")
         ax.set_ylabel("Total")
+        self.canvas.draw()
 
     def save_data(self):
         dir_path = QFileDialog.getExistingDirectory(self, "Select Directory")
